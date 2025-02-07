@@ -1,183 +1,87 @@
 function generateProtocol(child, pastSessions) {
-    let options = ['self', 'other'];
-    let condition = options[Math.floor(Math.random() * options.length)];
-    console.log('Condition:', condition);
-
-    if (condition === 'self') {
-        return {
-            frames: {
-                'welcome': {
-                    'kind': 'exp-lookit-text',
-                    'blocks': [
-                        {
-                            'title': 'Welcome!'
-                        },
-                        {
-                            'text': 'Thank you for participating in our study about how babies view faces!'
-                        },
-                        {
-                            'text': 'Here\'s what will happen:\n\n1. First, we\'ll check your webcam setup\n2. Then your baby will see some interesting images\n3. We\'ll record their reactions'
-                        }
-                    ],
-                    'showPreviousButton': false
-                },
-                'video-setup': {
-                    'kind': 'exp-video-config',
-                    'troubleshootingIntro': 'Having trouble with your webcam? We\'re here to help!'
-                },
-                'video-consent': {
-                    'kind': 'exp-lookit-video-consent',
-                    'template': 'consent_005',
-                    'PIName': 'Research Team',
-                    'institution': 'University',
-                    'purpose': 'We are interested in understanding how babies recognize and respond to faces, including their own face.',
-                    'procedures': 'Your baby will see either their own face through the webcam feed or a video of another baby. We will record their reactions.',
-                    'risk_statement': 'There are no risks beyond those in everyday life.',
-                    'voluntary_participation': 'Participation is completely voluntary.',
-                    'gdpr': false
-                },
-                'positioning': {
-                    'kind': 'exp-video-config-quality',
-                    'title': 'Getting Set Up',
-                    'introText': 'Let\'s get you and your baby in the right position!',
-                    'showRecordMenu': false,
-                    'requireTestVideo': false,
-                    'maxRecordingLength': 60,
-                    'maxUploadSeconds': 6
-                },
-                'self-trial': {
-                    'kind': 'exp-lookit-webcam-display',
-                    'blocks': [
-                        {
-                            'text': 'Please keep your child facing the screen'
-                        }
-                    ],
-                    'backgroundColor': 'white',
-                    'autoProceed': false,
-                    'parentTextBlock': {
-                        'text': 'Please keep your child facing the screen'
+    return {
+        frames: {
+            'welcome': {
+                'kind': 'exp-lookit-text',
+                'blocks': [
+                    {
+                        'title': 'Welcome!'
                     },
-                    'recordVideo': true,
-                    'doRecording': true,
-                    'recordingRequired': true,
-                    'showRecordMenu': false,
-                    'minimizeViewportDuration': false,
-                    'maximizeViewportDuration': true,
-                    'recordingLength': 30000,
-                    'displayFeedback': true,
-                    'webcamFeedback': true,
-                    'mirrorWebcam': true
-                },
-                'exit-survey': {
-                    'kind': 'exp-lookit-exit-survey',
-                    'debriefing': {
-                        'title': 'Thank you for participating!',
-                        'blocks': [
-                            {
-                                'text': 'We are studying how babies respond to seeing themselves versus seeing other babies. This will help us understand the development of self-recognition.'
-                            },
-                            {
-                                'title': 'What\'s next?',
-                                'text': 'We will carefully review the video recording to measure your baby\'s attention and reactions.'
-                            }
-                        ]
+                    {
+                        'text': 'Thank you for participating in our study about how babies view faces!'
                     }
-                }
+                ],
+                'showPreviousButton': false
             },
-            sequence: [
-                'welcome',
-                'self-trial',
-                'video-setup',
-                'video-consent',
-                'positioning',
-                'exit-survey'
-            ]
-        };
-    } else {
-        return {
-            frames: {
-                'welcome': {
-                    'kind': 'exp-lookit-text',
+            'video-consent': {
+                'kind': 'exp-lookit-video-consent',
+                'template': 'consent_005',
+                'PIName': 'Research Team',
+                'institution': 'University',
+                'purpose': 'We are interested in understanding how babies recognize and respond to faces.',
+                'procedures': 'Your baby will see their own face through the webcam.',
+                'risk_statement': 'There are no risks beyond those in everyday life.',
+                'voluntary_participation': 'Participation is completely voluntary.',
+                'gdpr': false
+            },
+            'calibration-instructions': {
+                'kind': 'exp-lookit-text',
+                'blocks': [
+                    {
+                        'text': 'Now we\'ll show your child some interesting patterns to help us track where they\'re looking.'
+                    }
+                ]
+            },
+            'calibration': {
+                'kind': 'exp-lookit-calibration',
+                'baseDir': 'https://raw.githubusercontent.com/M1shaaa/babyviewbaby/main',
+                'audioTypes': ['mp3'],
+                'videoTypes': ['mp4'],
+                'calibrationLength': 3000,
+                'calibrationPositions': [
+                    'center',
+                    'left',
+                    'right',
+                    'center'
+                ],
+                'calibrationImage': 'star.png',
+                'calibrationImageAnimation': 'spin',
+                'calibrationAudio': 'chimes',
+                'doRecording': true,
+                'backgroundColor': 'white',
+                'pauseVideo': 'attention',
+                'pauseAudio': 'chimes'
+            },
+            'self-trial': {
+                'kind': 'exp-lookit-webcam-display',
+                'displayFullscreenOverride': true,
+                'startRecordingAutomatically': true,
+                'doRecording': true,
+                'recordingLength': 15000,
+                'backgroundColor': 'white',
+                'autoProceed': true,
+                'showPreviousButton': false,
+                'nextButtonText': 'Next'
+            },
+            'exit-survey': {
+                'kind': 'exp-lookit-exit-survey',
+                'debriefing': {
+                    'title': 'Thank you for participating!',
                     'blocks': [
                         {
-                            'title': 'Welcome!'
-                        },
-                        {
-                            'text': 'Thank you for participating in our study about how babies view faces!'
-                        },
-                        {
-                            'text': 'Here\'s what will happen:\n\n1. First, we\'ll check your webcam setup\n2. Then your baby will see some interesting images\n3. We\'ll record their reactions'
+                            'text': 'We are studying how babies respond to seeing themselves.'
                         }
-                    ],
-                    'showPreviousButton': false
-                },
-                'video-setup': {
-                    'kind': 'exp-video-config',
-                    'troubleshootingIntro': 'Having trouble with your webcam? We\'re here to help!'
-                },
-                'video-consent': {
-                    'kind': 'exp-lookit-video-consent',
-                    'template': 'consent_005',
-                    'PIName': 'Research Team',
-                    'institution': 'University',
-                    'purpose': 'We are interested in understanding how babies recognize and respond to faces, including their own face.',
-                    'procedures': 'Your baby will see either their own face through the webcam feed or a video of another baby. We will record their reactions.',
-                    'risk_statement': 'There are no risks beyond those in everyday life.',
-                    'voluntary_participation': 'Participation is completely voluntary.',
-                    'gdpr': false
-                },
-                'positioning': {
-                    'kind': 'exp-video-config-quality',
-                    'title': 'Getting Set Up',
-                    'introText': 'Let\'s get you and your baby in the right position!',
-                    'showRecordMenu': false,
-                    'requireTestVideo': false,
-                    'maxRecordingLength': 60,
-                    'maxUploadSeconds': 6
-                },
-                'other-trial': {
-                    'kind': 'exp-lookit-video',
-                    'video': {
-                        'top': 0,
-                        'left': 0,
-                        'width': 100,
-                        'source': 'baby_other'
-                    },
-                    'autoProceed': false,
-                    'parentTextBlock': {
-                        'text': 'Please keep your child facing the screen'
-                    },
-                    'baseDir': 'https://raw.githubusercontent.com/M1shaaa/babyviewbaby/main',
-                    'videoTypes': ['mp4'],
-                    'recordVideo': true,
-                    'doRecording': true,
-                    'recordingRequired': true,
-                    'recordingLength': 30000
-                },
-                'exit-survey': {
-                    'kind': 'exp-lookit-exit-survey',
-                    'debriefing': {
-                        'title': 'Thank you for participating!',
-                        'blocks': [
-                            {
-                                'text': 'We are studying how babies respond to seeing themselves versus seeing other babies. This will help us understand the development of self-recognition.'
-                            },
-                            {
-                                'title': 'What\'s next?',
-                                'text': 'We will carefully review the video recording to measure your baby\'s attention and reactions.'
-                            }
-                        ]
-                    }
+                    ]
                 }
-            },
-            sequence: [
-                'welcome',
-                'other-trial',
-                'video-setup',
-                'video-consent',
-                'positioning',
-                'exit-survey'
-            ]
-        };
-    }
+            }
+        },
+        sequence: [
+            'welcome',
+            'video-consent',
+            'calibration-instructions',
+            'calibration',
+            'self-trial',
+            'exit-survey'
+        ]
+    };
 }
